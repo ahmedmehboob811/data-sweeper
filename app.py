@@ -17,15 +17,15 @@ uploaded_files = st.file_uploader("Upload your files (CSV oR Excel):", type=["cs
 
 if uploaded_files:
     for file in uploaded_files:
-        file.ext = os.path.splitext(file.name)[-1].lower()
+        file_ext = os.path.splitext(file.name)[-1].lower()
 
 
-        if file.ext ==".csv":
+        if file_ext ==".csv":
             df = pd.read_csv(file)
-        elif file.ext ==".xlsx":
+        elif file_ext ==".xlsx":
          df = pd.read_excel(file)
         else:
-            st.error(f"Unsupported file type : {file.ext}")
+            st.error(f"Unsupported file type : {file_ext}")
             continue    
 
         #Info about the file:
@@ -49,7 +49,7 @@ if uploaded_files:
 
             with col2:
                 if st.button(f"Filled  missing values for {file.name}"):
-                    numeric_cols = df.select_dftypes(include=[ 'number']).columns
+                    numeric_cols = df.select_dtypes(include=[ 'number']).columns
                     df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].mean())
                     st.write("Missing Values have been Filled!")
 
